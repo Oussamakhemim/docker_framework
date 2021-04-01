@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilmAnalyser</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script type="text/javascript" src="js/d3.min.js"></script>
+    <script src="js/script.js"></script>
+    <style type="text/css">
+            .genreCount{
+                float: right;
+                background-color: #FFA500;
+                text-align: right;
+                color: whitesmoke;
+                font-size: small;
+            }
+            .genre{
+                height: 1.1em;
+                display: table;
+                width: 400px;
+            }
+            .genreName{
+                font-size: small;
+                display: table-cell;
+            }
+    
+        </style>
+</head>
+<body>
+<header>
+	<div id="header">
+		<div id="headerRight">
+			<nav>  
+				<ul>
+					<li><a href="index.html">Page d'accueil</a></li>
+					<li><a href="genres.html">Films par genres</a></li>
+					<li><a href="budgets.html">Films par Budgets</a></li>
+					<li><a href="genresparmpaa.html">genres par MPAA Rate</a></li>
+					<li><a href="genresparrating.html">genres par ratings</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</header>
+<div id="wrapall">
+	<div id="main">
+		<section id="page">
+			<div> 
+			    <button onclick="sortByGenre()">Sort by genre</button>
+			   
+			    <button onclick="sortByCount()">Sort by count</button>
+			</div>
+        <div id="content" style="float:clear"></div>
+			<footer>
+				<p>Docker-framework__ Oussama Khemim 21915053
+				</p>
+			</footer>
+		</section>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+			let genresbyrating;
+			let sortCount = "down";
+			let sortGenre = "down";
+
+			function sortByCount() {
+			    if (sortCount == "down") {
+				genresbyrating.sort((a, b) => d3.ascending(a.count, b.count));
+				sortCount = "up";
+			    } else {
+				genresbyrating.sort((a, b) => d3.descending(a.count, b.count));
+				sortCount = "down";
+			    }
+
+			    d3
+				    .select("#content")
+				    .selectAll("div")
+				    .data(genresbyrating, d => d.count)
+				    .order()
+			}
+		
+
+			function sortByGenre() {
+			    if (sortGenre == "down") {
+				genresbyrating.sort((a, b) => d3.ascending(a.genre,b.genre));
+				sortGenre = "up";
+			    } else {
+				genresbyrating.sort((a, b) => d3.descending(a.genre, b.genre));
+				sortGenre = "down";
+			    }
+
+			    d3
+				    .select("#content")
+				    .selectAll("div")
+				    .data(genresbyrating, d => d.genre)
+				    .order()
+			}
+
+
+			function drawGenres(root) {
+			    genresbyrating = root.data.genresbyrating
+
+			    d3
+				    .select("#content")
+				    .selectAll("div")
+				    .data(genresbyrating)
+				    .join("div")
+				    .attr("class", "genre")
+				    .append("div")
+				    .attr("class", "genreName")
+				    .text(d => d.genre+"___"+d.rating)
+				   
+
+			    d3.selectAll(".genre")
+				    .append("div")
+				    .attr("class", "genreCount")
+				    .style("width", d => Math.log(d.count) + "em")
+				    .text(d => d.count)
+
+			}d3.json("http://localhost:4000/?query={genresbyrating(mini:2){genre rating count}}") .then(drawGenres)
+</script>
+</html>
+
+
+
+
+
+
+
+

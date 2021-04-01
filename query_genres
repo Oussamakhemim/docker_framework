@@ -1,0 +1,23 @@
+db.Movies.aggregate([
+{
+    $group:{
+        _id:{
+            genre:"$Genre"
+        },
+        count:{
+            $sum: 1
+        }
+    }
+}, 
+{
+    $project:{
+        genre:"$_id.genre",
+        count:1,
+        _id:0
+    }
+},
+{
+    $out:"genres"
+}
+])
+

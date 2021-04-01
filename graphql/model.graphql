@@ -1,0 +1,36 @@
+scalar JSON
+
+
+type Genre{
+    _id: ID
+    genre: String
+    count: Int
+}
+
+type GenreByRating{
+    _id: ID
+    genre: String
+    rating: String
+    count: Int 
+}
+
+type Budget{
+    _id: ID
+    budget: String
+    count: Int
+}
+
+type GenreByMPAA{
+    _id: ID
+    genre: String
+    mpaa: String
+    count: Int
+}
+
+
+type Query {
+    genres(mini: Int): [Genre]
+    genresbyrating(mini: Int): [GenreByRating]
+    budgets(mini: Int): [Budget]
+    genresbympaa(mini: Int): [GenreByMPAA]
+}

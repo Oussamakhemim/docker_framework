@@ -1,0 +1,23 @@
+db.Movies.aggregate([
+{
+    $group:{
+        _id:{
+            budget:"$Budget",
+        },
+        count:{
+            $sum: 1
+        }
+    }
+}, 
+{
+    $project:{
+            budget:"$_id.budget",
+            count:1,
+            _id:0
+    }
+},
+{
+    $out:"budget"
+}
+])
+
